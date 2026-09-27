@@ -1,0 +1,31 @@
+.section-shell__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-shell__eyebrow span {
+  color: var(--color-gold);
+}
+
+.section-shell__title {
+  max-width: 18ch;
+}
+
+.section-shell__body {
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+}
+
+.section-shell__placeholder {
+  max-width: var(--prose-max);
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-hairline);
+  padding-top: 1.25rem;
+}
+
+.section--inverse .section-shell__placeholder,
+.section--historical .section-shell__placeholder {
+  border-color: var(--border-hairline-inverse);
+  color: rgba(245, 239, 230, 0.72);
+}

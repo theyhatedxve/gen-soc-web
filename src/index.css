@@ -1,111 +1,209 @@
+/* ==========================================================================
+   FOUNDATION — Gender Roles: Tradition to Contemporary Philippines
+   Tokens, typography system, reset, and responsive scaffolding.
+   ========================================================================== */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* ---- Color tokens (from the source deck's palette) -------------------- */
+  --color-burgundy: #641e2a;      /* primary — historical weight, authority */
+  --color-cream: #f5efe6;         /* secondary — page ground */
+  --color-charcoal: #1b1b1b;      /* dark — body text, contemporary sections */
+  --color-gold: #c6a15b;          /* accent — timeline markers, emphasis */
+  --color-dustyrose: #c98f91;     /* supporting — soft highlight, hover states */
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Derived surface / text roles, so components reference roles, not raw hex */
+  --surface-page: var(--color-cream);
+  --surface-inverse: var(--color-charcoal);
+  --surface-historical: var(--color-burgundy);
+  --text-primary: var(--color-charcoal);
+  --text-inverse: var(--color-cream);
+  --text-muted: #6b6058;
+  --border-hairline: rgba(27, 27, 27, 0.14);
+  --border-hairline-inverse: rgba(245, 239, 230, 0.2);
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* ---- Typography --------------------------------------------------------
+     Display/headline: Fraunces — an editorial serif with enough warmth to
+     carry "historical" without tipping into stock Playfair territory.
+     Body/UI/labels: IBM Plex Sans — structured and neutral, so data and
+     contemporary sections read as analytical rather than ornamental.
+  -------------------------------------------------------------------------- */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Type scale — fluid, clamps between mobile and desktop */
+  --step-eyebrow: 0.8125rem;                                  /* 13px */
+  --step-body: 1.0625rem;                                     /* 17px */
+  --step-body-lg: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);    /* 18–22px */
+  --step-h3: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);       /* 22–30px */
+  --step-h2: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);          /* 30–44px */
+  --step-h1: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);             /* 40–72px */
+  --step-display: clamp(3rem, 1.5rem + 7vw, 7rem);            /* 48–112px, hero only */
+
+  --leading-tight: 1.08;
+  --leading-heading: 1.2;
+  --leading-body: 1.6;
+
+  /* ---- Layout ------------------------------------------------------------
+     Editorial column: generous margins, a readable measure for prose,
+     a wider measure for data/timeline content.
+  -------------------------------------------------------------------------- */
+  --content-max: 1200px;
+  --prose-max: 62ch;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --section-pad-y: clamp(4rem, 9vw, 8rem);
+
+  /* ---- Motion -------------------------------------------------------------
+     Kept minimal at foundation stage; individual sections opt into
+     purposeful motion in later phases.
+  -------------------------------------------------------------------------- */
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-standard: 320ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* ---- Breakpoints (reference — used inside media queries throughout) ------
+   mobile:  up to 640px   (default / no query)
+   tablet:  641px – 1024px
+   desktop: 1025px and up
+   wide:    1440px and up
+---------------------------------------------------------------------------- */
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+/* ---- Reset --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 body {
   margin: 0;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--step-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-#root {
-  width: 1126px;
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
   max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+h2,
+h3,
+h4,
+p,
+figure {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: var(--leading-heading);
+  color: inherit;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+h1 {
+  font-size: var(--step-h1);
+  line-height: var(--leading-tight);
+  font-weight: 400;
+}
+
+h2 {
+  font-size: var(--step-h2);
+}
+
+h3 {
+  font-size: var(--step-h3);
+}
+
+p {
+  max-width: var(--prose-max);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* ---- Shared layout primitives -------------------------------------------- */
+.wrapper {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-pad-y);
+}
+
+.section--inverse {
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+}
+
+.section--historical {
+  background: var(--surface-historical);
+  color: var(--text-inverse);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--step-eyebrow);
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Visible keyboard focus across the site */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
 }

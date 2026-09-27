@@ -1,16 +1,56 @@
-# React + Vite
+# Gender Roles: Tradition to Contemporary Philippines
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Vite + React scaffold for the interactive site. This drop is **Phase 1 — Foundation** only, per the development plan.
 
-Currently, two official plugins are available:
+## What's in this phase
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Vite + React project structure (no CSS framework — plain CSS with custom properties)
+- Global styles: reset, base typography, focus states, reduced-motion handling
+- Design tokens: color palette, type scale, spacing/gutter, breakpoints (`src/index.css :root`)
+- Typography system: **Fraunces** (display/headings) + **IBM Plex Sans** (body/UI), loaded via Google Fonts
+- Navbar: fixed header, wordmark, links to all 8 sections, mobile toggle, scroll-aware background
+- Full page skeleton: Hero + all 8 sections mounted in scroll order, each as a structural stub
+- Responsive breakpoints: mobile (≤640px) / tablet (641–1024px) / desktop (1025px+)
 
-## React Compiler
+Section stubs (`src/sections/*.jsx`) intentionally hold no real content yet — each renders a placeholder
+line naming the phase that fills it in (Phases 3–8), so the scroll order and spacing can be reviewed now.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Design tokens
 
-## Expanding the ESLint configuration
+| Role | Value |
+| --- | --- |
+| Primary — Burgundy | `#641E2A` |
+| Secondary — Cream | `#F5EFE6` |
+| Dark — Charcoal | `#1B1B1B` |
+| Accent — Gold | `#C6A15B` |
+| Supporting — Dusty Rose | `#C98F91` |
+| Display type | Fraunces |
+| Body / UI type | IBM Plex Sans |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Run it
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the local URL Vite prints (typically `http://localhost:5173`).
+
+## Project structure
+
+```text
+src/
+├── components/   # Navbar, Hero, SectionShell, Footer (shared UI)
+├── sections/     # One file per top-level section (currently stubs)
+├── data/         # sections.js — shared nav/section metadata
+├── assets/       # historical/, contemporary/, icons/, images/ (empty, ready for Phase 4+)
+├── App.jsx       # Assembles the full page skeleton
+├── main.jsx      # React entry point
+└── index.css     # Tokens, typography system, reset, layout primitives
+```
+
+## Next phase
+
+**Phase 2 — Hero & Navigation:** build the real hero composition (split historical/contemporary
+imagery, entrance animation), the numbered section-navigator interaction described in the plan, and
+scroll-based page transitions.

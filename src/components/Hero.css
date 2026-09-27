@@ -1,0 +1,22 @@
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-top: 6rem;
+}
+
+.hero__inner {
+  max-width: 44ch;
+}
+
+.hero h1 {
+  margin-top: 0.75rem;
+  font-size: var(--step-display);
+}
+
+.hero__sub {
+  margin-top: 1.5rem;
+  font-size: var(--step-body-lg);
+  color: var(--text-muted);
+  max-width: 38ch;
+}
