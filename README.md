@@ -1,8 +1,31 @@
 # Gender Roles: Tradition to Contemporary Philippines
 
-Vite + React scaffold for the interactive site. This drop is **Phase 1 — Foundation** only, per the development plan.
+Vite + React scaffold for the interactive site. Current drop covers **Phase 1 — Foundation** and **Phase 2 — Hero & Navigation**, per the development plan.
 
-## What's in this phase
+## Phase 2 — Hero & Navigation
+
+- **Hero**: full split composition — intro copy + CTA on one side, a drawn SVG timeline running
+  Pre-colonial → Spanish Colonial → American Period → Post-war → **Contemporary Philippines** on the
+  other. No historical photography is used yet (none has been supplied); the drawn line stands in for
+  it until real imagery lands in a later phase.
+- **Entrance animation**: title/subtitle/CTA rise in on load, the timeline line draws itself via
+  `stroke-dashoffset`, and each period staggers in — all skipped in favor of the final state under
+  `prefers-reduced-motion`.
+- **Interactive section navigator** (`SectionNavigator.jsx`): replaces static nav links. Hovering or
+  focusing an item enlarges its number, tints the title and the navbar toward that section's accent
+  color, and reveals a one-line description. Used inline in the desktop navbar and as a full-screen
+  list on mobile (tap/focus takes the place of hover).
+- **Scroll navigation**: `useActiveSection` tracks which section is on screen via
+  `IntersectionObserver` and highlights the matching navigator item as the visitor scrolls.
+- **Page transitions**: `SectionShell` now rises and fades in the first time each section enters the
+  viewport (`useInView`), a single consistent transition rather than per-element scatter, again
+  skipped under reduced motion.
+
+New files: `src/hooks/useInView.js`, `src/hooks/useActiveSection.js`,
+`src/components/SectionNavigator.jsx` (+ `.css`). `Hero.jsx`, `Navbar.jsx`, `Navbar.css`, and
+`SectionShell.jsx/.css` were rebuilt; `data/sections.js` gained `description` and `accent` per section.
+
+## What's in Phase 1
 
 - Vite + React project structure (no CSS framework — plain CSS with custom properties)
 - Global styles: reset, base typography, focus states, reduced-motion handling
@@ -40,9 +63,10 @@ Then open the local URL Vite prints (typically `http://localhost:5173`).
 
 ```text
 src/
-├── components/   # Navbar, Hero, SectionShell, Footer (shared UI)
-├── sections/     # One file per top-level section (currently stubs)
-├── data/         # sections.js — shared nav/section metadata
+├── components/   # Navbar, SectionNavigator, Hero, SectionShell, Footer (shared UI)
+├── hooks/        # useInView (reveal/entrance), useActiveSection (scroll spy)
+├── sections/     # One file per top-level section (still content stubs — Phase 3+)
+├── data/         # sections.js — shared nav/section metadata, descriptions, accents
 ├── assets/       # historical/, contemporary/, icons/, images/ (empty, ready for Phase 4+)
 ├── App.jsx       # Assembles the full page skeleton
 ├── main.jsx      # React entry point
@@ -51,6 +75,5 @@ src/
 
 ## Next phase
 
-**Phase 2 — Hero & Navigation:** build the real hero composition (split historical/contemporary
-imagery, entrance animation), the numbered section-navigator interaction described in the plan, and
-scroll-based page transitions.
+**Phase 3 — Understanding:** the gender-roles explanation, the Sex vs. Gender comparison, and the
+"Why study gender roles?" interactive cards.

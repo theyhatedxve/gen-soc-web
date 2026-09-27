@@ -13,7 +13,20 @@
   box-shadow: 0 1px 0 var(--border-hairline);
 }
 
+/* Low-opacity wash toward the hovered section's accent — placeholder for
+   the "background image changes" behavior until real imagery lands. */
+.navbar--scrolled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--navbar-tint, transparent);
+  opacity: 0.06;
+  pointer-events: none;
+  transition: opacity var(--duration-standard) var(--ease-standard);
+}
+
 .navbar__inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,6 +41,7 @@
   font-size: 1.15rem;
   text-decoration: none;
   color: var(--text-primary);
+  z-index: 1;
 }
 
 .navbar__brand-sub {
@@ -41,6 +55,7 @@
   background: none;
   border: none;
   padding: 0.5rem;
+  z-index: 1;
 }
 
 .navbar__toggle-bar,
@@ -62,30 +77,8 @@
   transform: translateY(4px);
 }
 
-.navbar__nav ul {
-  display: flex;
-  gap: clamp(1rem, 2vw, 2rem);
-}
-
-.navbar__nav a {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
-  text-decoration: none;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  border-bottom: 1px solid transparent;
-  padding-block: 0.25rem;
-  transition: border-color var(--duration-standard) var(--ease-standard);
-}
-
-.navbar__nav a:hover {
-  border-color: var(--color-gold);
-}
-
-.navbar__index {
-  font-size: 0.6875rem;
-  color: var(--text-muted);
+.navbar__mobile-nav {
+  display: none;
 }
 
 @media (max-width: 1024px) {
@@ -93,7 +86,12 @@
     display: block;
   }
 
-  .navbar__nav {
+  .navbar__desktop-nav {
+    display: none;
+  }
+
+  .navbar__mobile-nav {
+    display: block;
     position: fixed;
     inset: 0;
     top: 0;
@@ -101,20 +99,10 @@
     transform: translateY(-100%);
     transition: transform var(--duration-standard) var(--ease-standard);
     padding-top: 6rem;
-  }
-
-  .navbar__nav.is-open {
-    transform: translateY(0);
-  }
-
-  .navbar__nav ul {
-    flex-direction: column;
-    gap: 1.25rem;
     padding-inline: var(--gutter);
   }
 
-  .navbar__nav a {
-    font-size: var(--step-h3);
-    font-family: var(--font-display);
+  .navbar__mobile-nav.is-open {
+    transform: translateY(0);
   }
 }

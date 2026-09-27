@@ -1,26 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { SECTIONS } from '../data/sections.js'
+import { useActiveSection } from '../hooks/useActiveSection.js'
+import SectionNavigator from './SectionNavigator.jsx'
 import './Navbar.css'
 
-/**
- * Foundation-level navbar: fixed header, wordmark, and links to each
- * top-level section. The richer hover-driven "section navigator" described
- * in the plan (numbered cards, background swaps) is a Phase 2 concern —
- * this component only establishes structure, scroll behavior, and the
- * mobile toggle it will later be built on top of.
- */
+const ACCENT_VARS = {
+  gold: 'var(--color-gold)',
+  burgundy: 'var(--color-burgundy)',
+  charcoal: 'var(--color-charcoal)',
+  dustyrose: 'var(--color-dustyrose)',
+}
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [hoveredId, setHoveredId] = useState(null)
+
+  const sectionIds = useMemo(() => SECTIONS.map((s) => s.id), [])
+  const activeId = useActiveSection(sectionIds)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 8)
     window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const hoveredSection = SECTIONS.find((s) => s.id === hoveredId)
+  const tintVar = hoveredSection ? ACCENT_VARS[hoveredSection.accent] : null
+
   return (
-    <header className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
+    <header
+      className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}
+      style={tintVar ? { '--navbar-tint': tintVar } : undefined}
+    >
       <div className="navbar__inner wrapper">
         <a className="navbar__brand" href="#home">
           Gender Roles
@@ -37,22 +50,29 @@ export default function Navbar() {
           <span className={`navbar__toggle-bar ${isOpen ? 'is-open' : ''}`} />
         </button>
 
-        <nav
+        <div className="navbar__desktop-nav">
+          <SectionNavigator
+            layout="desktop"
+            activeId={activeId}
+            hoveredId={hoveredId}
+            onHover={setHoveredId}
+            onLeave={() => setHoveredId(null)}
+          />
+        </div>
+
+        <div
           id="primary-navigation"
-          className={`navbar__nav ${isOpen ? 'is-open' : ''}`}
-          aria-label="Section navigation"
+          className={`navbar__mobile-nav ${isOpen ? 'is-open' : ''}`}
         >
-          <ul>
-            {SECTIONS.map((section) => (
-              <li key={section.id}>
-                <a href={`#${section.id}`} onClick={() => setIsOpen(false)}>
-                  <span className="navbar__index">{section.index}</span>
-                  {section.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <SectionNavigator
+            layout="mobile"
+            activeId={activeId}
+            hoveredId={hoveredId}
+            onHover={setHoveredId}
+            onLeave={() => setHoveredId(null)}
+            onNavigate={() => setIsOpen(false)}
+          />
+        </div>
       </div>
     </header>
   )
